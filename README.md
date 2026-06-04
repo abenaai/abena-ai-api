@@ -63,7 +63,7 @@ curl -s -X POST https://abena.mobobi.com/playground/api/v1/tts/synthesize/ \
 
 ### TTS Voices
 
-Fetch the live list any time: `GET /tts/voices.json`. Older short IDs and playground model IDs like `akua`, `en-ng-chioma`, `swahili`, and `nigerian_pidgin_s` are still accepted as aliases, but new integrations should use the language-suffixed IDs below.
+Fetch the live list any time: `GET /tts/voices.json`. Older short IDs and playground model IDs like `akua`, `en-ng-chioma`, `en-ng-chioma-whispering`, `swahili`, and `nigerian_pidgin_s` are still accepted as aliases, but new integrations should use the language-suffixed IDs below.
 
 | Voice ID   | Name     | Language                  | Country  | Gender |
 |------------|----------|---------------------------|----------|--------|
@@ -72,6 +72,7 @@ Fetch the live list any time: `GET /tts/voices.json`. Older short IDs and playgr
 | `akua_eng`     | Akua     | English (Ghanaian accent) 🇬🇭| Ghana | Female |
 | `kwabena_eng`  | Kwabena  | English (Ghanaian accent) 🇬🇭| Ghana | Male |
 | `chioma_eng`   | Chioma   | English (Nigerian accent, energetic) | Nigeria | Female |
+| `chioma_whispering_eng` | Chioma | English (Nigerian accent, whispering) | Nigeria | Female |
 | `mawuli_ewe`   | Mawuli   | Ewe                       | Ghana    | Male   |
 | `james_pcm`    | James    | Nigerian Pidgin English   | Nigeria  | Male   |
 | `amani_swh`    | Amani    | Swahili                   | Kenya    | Female |
