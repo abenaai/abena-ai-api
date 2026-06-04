@@ -4,6 +4,7 @@ Turns an audio file into text. No API key needed (uses the free tier).
 
 Run:
     python asr.py recording.wav
+    python asr.py recording.wav gpe
 """
 
 import json
@@ -55,4 +56,5 @@ def transcribe(path, language="en", api_key=None):
 
 if __name__ == "__main__":
     audio_path = sys.argv[1] if len(sys.argv) > 1 else "recording.wav"
-    transcribe(audio_path)
+    language = sys.argv[2] if len(sys.argv) > 2 else "en"
+    transcribe(audio_path, language=language)
