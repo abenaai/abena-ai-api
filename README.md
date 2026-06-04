@@ -91,9 +91,11 @@ POST /asr/transcribe/
 
 | Field            | Required | Description |
 |------------------|----------|-------------|
-| `audio_file`     | yes      | Your audio file (e.g. `.wav`, MP3, M4A). Up to **2 minutes** (120 seconds), 8 MB max. |
+| `audio_file`     | yes      | Your audio file. Up to **2 minutes** (120 seconds), 8 MB max. |
 | `language`       | no       | `en` (English) or `gpe` (Ghanaian Pidgin). Default `en`. |
 | `reference_text` | no       | If you know the correct text, include it to also get accuracy/WER scores. |
+
+Supported audio formats: WAV/PCM, MP3, M4A/AAC, FLAC, OGG, and other common formats that FFmpeg can decode. For the most predictable batch evaluations, use mono WAV at 16 kHz. Non-WAV uploads are converted on the server before transcription.
 
 **Response (JSON)**
 
