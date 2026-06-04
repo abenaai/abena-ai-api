@@ -5,7 +5,7 @@
 
 const API = "https://abena.mobobi.com/playground/api/v1/tts/synthesize/";
 
-async function synthesize(text, voice = "akua", speed = 1.0, apiKey = null) {
+async function synthesize(text, voice = "akua_eng", speed = 1.0, apiKey = null) {
   const headers = { "Content-Type": "application/json" };
   if (apiKey) headers["Authorization"] = `Bearer ${apiKey}`;
 
@@ -23,13 +23,13 @@ async function synthesize(text, voice = "akua", speed = 1.0, apiKey = null) {
 }
 
 // --- Browser: play it directly ---
-// const data = await synthesize("Hello!", "akua");
+// const data = await synthesize("Hello!", "akua_eng");
 // new Audio("data:audio/wav;base64," + data.audio_base64).play();
 
 // --- Node.js: save it to a file ---
 if (typeof window === "undefined") {
   const fs = require("fs");
-  synthesize("Akwaaba, wo ho te sen?", "abena")
+  synthesize("Akwaaba, wo ho te sen?", "abena_twi")
     .then((data) => {
       fs.writeFileSync("speech.wav", Buffer.from(data.audio_base64, "base64"));
       console.log(`Saved speech.wav (${data.duration_seconds}s of audio)`);
