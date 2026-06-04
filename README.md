@@ -4,7 +4,7 @@ African‑language **Text‑to‑Speech** (speech from text) and **Speech Recogn
 
 Use it from a website, a phone app, a server, or just your terminal — **no special library required**.
 
-> 🟢 **Start free:** you get **100 requests with no account and no API key**. Just send a request and it works.
+> 🟢 **Start free:** you get **500 requests with no account and no API key**. Just send a request and it works.
 
 - 🌍 Live playground: <https://abena.mobobi.com/playground/tts/>
 - 📖 Full docs: <https://abena.mobobi.com/playground/sdk/docs/>
@@ -142,7 +142,7 @@ Errors return JSON with a helpful `message` (TTS) or `error` (ASR) field.
 |-------------|--------------------|------------|
 | `200`       | Success            | Use the result. |
 | `400`       | Bad request        | Check fields (missing `text`, unknown `voice`, `speed` out of range). |
-| `401`       | Free limit reached | You've used your 100 free requests — [get an API key](https://abena.mobobi.com/playground/sdk/dashboard/). |
+| `401`       | Free limit reached | You've used your 500 free requests — [get an API key](https://abena.mobobi.com/playground/sdk/dashboard/). |
 | `413`       | Too large          | Shorten text (500 chars) or audio (120 s / 8 MB). |
 | `429`       | Too many requests  | Slow down and retry shortly. |
 | `500`/`503` | Server issue       | Retry shortly; contact support if it persists. |
