@@ -152,7 +152,11 @@ Runnable examples live in [`examples/`](examples/):
 - [`examples/asr.py`](examples/asr.py) — Python speech recognition.
 - [`examples/tts.js`](examples/tts.js) — Node.js / browser text‑to‑speech.
 
-### Quick browser snippet
+## Use From Any Language
+
+The API is plain HTTP + JSON, so any language that can make a web request can use it. The examples below work with the free tier and do not require an API key.
+
+### JavaScript
 
 ```javascript
 const res = await fetch(
@@ -160,11 +164,63 @@ const res = await fetch(
   {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text: "Hello!", voice: "akua_eng" })
+    body: JSON.stringify({
+      text: "Hello!",
+      voice: "akua_eng",
+      speed: 1.0
+    })
   }
 );
+
 const data = await res.json();
 new Audio("data:audio/wav;base64," + data.audio_base64).play();
+```
+
+### Python Text-to-Speech
+
+Uses Python's built-in HTTP client, so there is no extra package to install.
+
+```python
+import base64, json
+from urllib.request import Request, urlopen
+
+payload = json.dumps({
+    "text": "Akwaaba, wo ho te sen?",
+    "voice": "abena_twi",
+    "speed": 1.0
+}).encode("utf-8")
+
+req = Request(
+    "https://abena.mobobi.com/playground/api/v1/tts/synthesize/",
+    data=payload,
+    headers={"Content-Type": "application/json", "Accept": "application/json"},
+    method="POST",
+)
+
+with urlopen(req, timeout=120) as res:
+    data = json.loads(res.read().decode("utf-8"))
+
+with open("speech.wav", "wb") as f:
+    f.write(base64.b64decode(data["audio_base64"]))
+
+print("Saved speech.wav")
+```
+
+### Python Speech Recognition
+
+```python
+import requests
+
+with open("recording.wav", "rb") as audio:
+    res = requests.post(
+        "https://abena.mobobi.com/playground/api/v1/asr/transcribe/",
+        files={"audio_file": audio},
+        data={"language": "en"},
+        timeout=120,
+    )
+
+data = res.json()
+print(data["text"])
 ```
 
 ## API Keys (Optional)
