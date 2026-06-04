@@ -123,7 +123,7 @@ Fetch the live list any time: `GET /asr/voices.json`
 
 | Code  | Language                | Country |
 |-------|-------------------------|---------|
-| `en`  | English (US)            | United States |
+| `en`  | English (Ghanaian accent) 🇬🇭 | Ghana |
 | `gpe` | Ghanaian Pidgin English 🇬🇭| Ghana |
 
 > 🔜 More languages, including **Akan Twi** speech recognition, are coming soon.
