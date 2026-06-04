@@ -17,18 +17,6 @@ Use it from a website, a phone app, a server, or just your terminal — **no spe
 https://abena.mobobi.com/playground/api/v1
 ```
 
-## Authentication
-
-For the **free tier** you don't need anything — just send the request.
-
-When you have an API key (from your [dashboard](https://abena.mobobi.com/playground/sdk/dashboard/)), send it one of these ways:
-
-```
-Authorization: Bearer YOUR_API_KEY      # recommended
-X-API-Key: YOUR_API_KEY
-?api_key=YOUR_API_KEY                    # query string, handy for quick tests
-```
-
 > ℹ️ **First request to a voice may take ~10–15 seconds.** The first time a voice is used, its model is loaded and prepared on our server (offline). After that the same voice responds in about a second.
 
 ---
@@ -177,6 +165,18 @@ const res = await fetch(
 );
 const data = await res.json();
 new Audio("data:audio/wav;base64," + data.audio_base64).play();
+```
+
+## API Keys (Optional)
+
+You do not need an API key for the free tier examples above. Just send a request and it works.
+
+When you are ready to build beyond the no-account allowance, create a free account from your [dashboard](https://abena.mobobi.com/playground/sdk/dashboard/) and send your key one of these ways:
+
+```
+Authorization: Bearer YOUR_API_KEY      # recommended
+X-API-Key: YOUR_API_KEY
+?api_key=YOUR_API_KEY                    # query string, handy for quick tests
 ```
 
 ---
