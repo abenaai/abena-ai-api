@@ -63,15 +63,18 @@ curl -s -X POST https://abena.mobobi.com/playground/api/v1/tts/synthesize/ \
 
 ### TTS Voices
 
-Fetch the live list any time: `GET /tts/voices.json`. Older short IDs like `akua`, `abena`, and `kobby` are still accepted as aliases, but new integrations should use the language-suffixed IDs below.
+Fetch the live list any time: `GET /tts/voices.json`. Older short IDs and playground model IDs like `akua`, `en-ng-chioma`, `swahili`, and `nigerian_pidgin_s` are still accepted as aliases, but new integrations should use the language-suffixed IDs below.
 
 | Voice ID   | Name     | Language                  | Country  | Gender |
 |------------|----------|---------------------------|----------|--------|
 | `abena_twi`    | Abena    | Twi (Akan) 🇬🇭            | Ghana    | Female |
 | `kobby_gpe`    | Kobby    | Ghanaian Pidgin English 🇬🇭| Ghana    | Male   |
 | `akua_eng`     | Akua     | English (Ghanaian accent) 🇬🇭| Ghana | Female |
+| `kwabena_eng`  | Kwabena  | English (Ghanaian accent) 🇬🇭| Ghana | Male |
+| `chioma_eng`   | Chioma   | English (Nigerian accent, energetic) | Nigeria | Female |
 | `mawuli_ewe`   | Mawuli   | Ewe                       | Ghana    | Male   |
 | `james_pcm`    | James    | Nigerian Pidgin English   | Nigeria  | Male   |
+| `amani_swh`    | Amani    | Swahili                   | Kenya    | Female |
 | `abubakar_hau` | Abubakar | Hausa                     | Nigeria  | Male   |
 | `folami_yor`   | Folami   | Yoruba                    | Nigeria  | Female |
 
