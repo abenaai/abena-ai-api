@@ -215,17 +215,35 @@ print("Saved speech.wav")
 ### Python Speech Recognition
 
 ```python
-import requests
+import json, mimetypes, uuid
+from pathlib import Path
+from urllib.request import Request, urlopen
 
-with open("recording.wav", "rb") as audio:
-    res = requests.post(
-        "https://abena.mobobi.com/playground/api/v1/asr/transcribe/",
-        files={"audio_file": audio},
-        data={"language": "en"},
-        timeout=120,
-    )
+audio_path = Path("recording.wav")
+boundary = "----abena-" + uuid.uuid4().hex
+audio_bytes = audio_path.read_bytes()
+content_type = mimetypes.guess_type(audio_path.name)[0] or "application/octet-stream"
 
-data = res.json()
+body = (
+    f"--{boundary}\r\n"
+    'Content-Disposition: form-data; name="language"\r\n\r\n'
+    "en\r\n"
+    f"--{boundary}\r\n"
+    f'Content-Disposition: form-data; name="audio_file"; filename="{audio_path.name}"\r\n'
+    f"Content-Type: {content_type}\r\n\r\n"
+).encode("utf-8") + audio_bytes + f"\r\n--{boundary}--\r\n".encode("utf-8")
+
+req = Request(
+    "https://abena.mobobi.com/playground/api/v1/asr/transcribe/",
+    data=body,
+    headers={
+        "Content-Type": f"multipart/form-data; boundary={boundary}",
+        "Accept": "application/json",
+    },
+    method="POST",
+)
+with urlopen(req, timeout=120) as res:
+    data = json.loads(res.read().decode("utf-8"))
 print(data["text"])
 ```
 
