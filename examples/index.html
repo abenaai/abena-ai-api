@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Abena AI — Text to Speech</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; padding: 0 16px; color: #1d1d1f; }
+    h1 { font-size: 1.6rem; }
+    textarea, select { width: 100%; padding: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px; margin: 8px 0; box-sizing: border-box; }
+    button { background: #007AFF; color: #fff; border: 0; border-radius: 8px; padding: 12px 22px; font-size: 1rem; cursor: pointer; }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    #status { font-family: monospace; color: #555; min-height: 1.2em; margin-top: 12px; }
+    audio { width: 100%; margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Abena AI — Text to Speech</h1>
+  <p>No API key needed — this uses the free tier. The first use of a voice can take ~10–15s to warm up.</p>
+
+  <textarea id="text" rows="3">Akwaaba! Welcome to Abena AI.</textarea>
+
+  <select id="voice">
+    <option value="akua">Akua — English (Ghana)</option>
+    <option value="abena">Abena — Twi (Ghana)</option>
+    <option value="kobby">Kobby — Ghanaian Pidgin (Ghana)</option>
+    <option value="mawuli">Mawuli — Ewe (Ghana)</option>
+    <option value="james">James — Nigerian Pidgin (Nigeria)</option>
+    <option value="abubakar">Abubakar — Hausa (Nigeria)</option>
+    <option value="folami">Folami — Yoruba (Nigeria)</option>
+  </select>
+
+  <button id="btn" onclick="speak()">Speak</button>
+  <p id="status"></p>
+  <audio id="player" controls></audio>
+
+  <script>
+    const API = "https://abena.mobobi.com/playground/api/v1/tts/synthesize/";
+
+    async function speak() {
+      const status = document.getElementById("status");
+      const btn = document.getElementById("btn");
+      const player = document.getElementById("player");
+
+      btn.disabled = true;
+      status.textContent = "Generating… (first use of a voice can take ~15s)";
+
+      try {
+        const res = await fetch(API, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          // To use your own key instead of the free tier, add:
+          // headers: { "Content-Type": "application/json", "Authorization": "Bearer YOUR_API_KEY" },
+          body: JSON.stringify({
+            text: document.getElementById("text").value,
+            voice: document.getElementById("voice").value
+          })
+        });
+        const data = await res.json();
+        if (res.ok && data.status === "success") {
+          player.src = "data:audio/wav;base64," + data.audio_base64;
+          player.play();
+          status.textContent = "Done — " + data.duration_seconds + "s of audio.";
+        } else {
+          status.textContent = "Error: " + (data.message || data.error || ("HTTP " + res.status));
+        }
+      } catch (e) {
+        status.textContent = "Network error: " + e.message;
+      } finally {
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
