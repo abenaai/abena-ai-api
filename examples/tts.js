@@ -29,7 +29,7 @@ async function synthesize(text, voice = "akua_eng", speed = 1.0, apiKey = null) 
 // --- Node.js: save it to a file ---
 if (typeof window === "undefined") {
   const fs = require("fs");
-  synthesize("Akwaaba, wo ho te sen?", "abena_twi")
+  synthesize("Akwaaba, wo ho te sen?", "abena_twi_high")
     .then((data) => {
       fs.writeFileSync("speech.wav", Buffer.from(data.audio_base64, "base64"));
       console.log(`Saved speech.wav (${data.duration_seconds}s of audio)`);

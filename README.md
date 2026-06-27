@@ -36,7 +36,7 @@ POST /tts/synthesize/
 | Field   | Required | Description |
 |---------|----------|-------------|
 | `text`  | yes      | Text to speak (up to 500 characters). |
-| `voice` | yes      | A voice ID, e.g. `akua_eng`, `abena_twi`, `kobby_gpe` — see [Voices](#tts-voices). |
+| `voice` | yes      | A voice ID, e.g. `akua_eng`, `abena_twi_high`, `kobby_gpe` — see [Voices](#tts-voices). |
 | `speed` | no       | `1.0` normal, `0.5` slowest, `2.0` fastest. Default `1.0`. |
 
 **Response (JSON)**
@@ -55,19 +55,20 @@ POST /tts/synthesize/
 ```bash
 curl -s -X POST https://abena.mobobi.com/playground/api/v1/tts/synthesize/ \
   -H "Content-Type: application/json" \
-  -d '{"text": "Akwaaba, wo ho te sen?", "voice": "abena_twi", "speed": 1.0}' \
+  -d '{"text": "Akwaaba, wo ho te sen?", "voice": "abena_twi_high", "speed": 1.0}' \
   | python3 -c "import sys,json,base64; open('speech.wav','wb').write(base64.b64decode(json.load(sys.stdin)['audio_base64'])); print('Saved speech.wav')"
 ```
 
-> 🗣️ **Twi tip (voice `abena_twi`):** write naturally and use commas to break long ideas into short phrases. The voice reads phrase‑by‑phrase, which sounds far more natural for podcasts and long text.
+> 🗣️ **Twi tip:** use `abena_twi_high` for the newer, more natural single-speaker Twi voice. Use `abena_twi_low` only when you want the legacy Twi voice. For longer Twi text, write naturally and use commas to break long ideas into short phrases.
 
 ### TTS Voices
 
-Fetch the live list any time: `GET /tts/voices.json`. Older short IDs and playground model IDs like `akua`, `en-ng-chioma`, `en-ng-chioma-whispering`, `swahili`, and `nigerian_pidgin_s` are still accepted as aliases, but new integrations should use the language-suffixed IDs below.
+Fetch the live list any time: `GET /tts/voices.json`. Older short IDs and playground model IDs like `akua`, `en-ng-chioma`, `en-ng-chioma-whispering`, `swahili`, and `nigerian_pidgin_s` are still accepted as aliases, but new integrations should use the language-suffixed IDs below. The old Twi ID `abena_twi` has been replaced by explicit high/low options.
 
 | Voice ID   | Name     | Language                  | Country  | Gender |
 |------------|----------|---------------------------|----------|--------|
-| `abena_twi`    | Abena    | Twi (Akan) 🇬🇭            | Ghana    | Female |
+| `abena_twi_high` | Abena High | Twi (Akan, newer natural voice) 🇬🇭 | Ghana | Female |
+| `abena_twi_low`  | Abena Low  | Twi (Akan, legacy voice) 🇬🇭 | Ghana | Female |
 | `kobby_gpe`    | Kobby    | Ghanaian Pidgin English 🇬🇭| Ghana    | Male   |
 | `akua_eng`     | Akua     | English (Ghanaian accent) 🇬🇭| Ghana | Female |
 | `kwabena_eng`  | Kwabena  | English (Ghanaian accent) 🇬🇭| Ghana | Male |
@@ -192,7 +193,7 @@ from urllib.request import Request, urlopen
 
 payload = json.dumps({
     "text": "Akwaaba, wo ho te sen?",
-    "voice": "abena_twi",
+    "voice": "abena_twi_high",
     "speed": 1.0
 }).encode("utf-8")
 
