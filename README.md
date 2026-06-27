@@ -59,16 +59,16 @@ curl -s -X POST https://abena.mobobi.com/playground/api/v1/tts/synthesize/ \
   | python3 -c "import sys,json,base64; open('speech.wav','wb').write(base64.b64decode(json.load(sys.stdin)['audio_base64'])); print('Saved speech.wav')"
 ```
 
-> 🗣️ **Twi tip:** use `abena_twi_high` for the newer, more natural single-speaker Twi voice. Use `abena_twi_low` only when you want the legacy Twi voice. For longer Twi text, write naturally and use commas to break long ideas into short phrases.
+> 🗣️ **Twi tip:** use `abena_twi_high` for the newer, more natural single-speaker Twi voice. Use `abena_twi_lite` when you want the lighter voice, which can sound clearer on some short phrases. For longer Twi text, write naturally and use commas to break long ideas into short phrases.
 
 ### TTS Voices
 
-Fetch the live list any time: `GET /tts/voices.json`. Older short IDs and playground model IDs like `akua`, `en-ng-chioma`, `en-ng-chioma-whispering`, `swahili`, and `nigerian_pidgin_s` are still accepted as aliases, but new integrations should use the language-suffixed IDs below. The old Twi ID `abena_twi` has been replaced by explicit high/low options.
+Fetch the live list any time: `GET /tts/voices.json`. Older short IDs and playground model IDs like `akua`, `en-ng-chioma`, `en-ng-chioma-whispering`, `swahili`, and `nigerian_pidgin_s` are still accepted as aliases, but new integrations should use the language-suffixed IDs below. The old Twi ID `abena_twi` has been replaced by explicit High and Lite options.
 
 | Voice ID   | Name     | Language                  | Country  | Gender |
 |------------|----------|---------------------------|----------|--------|
 | `abena_twi_high` | Abena High | Twi (Akan, newer natural voice) 🇬🇭 | Ghana | Female |
-| `abena_twi_low`  | Abena Low  | Twi (Akan, legacy voice) 🇬🇭 | Ghana | Female |
+| `abena_twi_lite` | Abena Lite | Twi (Akan, lighter voice) 🇬🇭 | Ghana | Female |
 | `kobby_gpe`    | Kobby    | Ghanaian Pidgin English 🇬🇭| Ghana    | Male   |
 | `akua_eng`     | Akua     | English (Ghanaian accent) 🇬🇭| Ghana | Female |
 | `kwabena_eng`  | Kwabena  | English (Ghanaian accent) 🇬🇭| Ghana | Male |
