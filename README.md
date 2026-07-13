@@ -44,11 +44,15 @@ POST /tts/synthesize/
 ```json
 {
   "status": "success",
+  "voice": "abena_twi_high",
   "audio_base64": "UklGRiQ...",
   "duration_seconds": 2.91,
-  "mime_type": "audio/wav"
+  "mime_type": "audio/wav",
+  "quality": "high"
 }
 ```
+
+For `abena_twi_high`, `quality` is normally `high`. During high demand it may be `medium` with `notice: "Medium quality used due to high demand."` The next request tries High again.
 
 **Example (curl)** — saves `speech.wav`, no API key needed:
 
