@@ -52,7 +52,7 @@ POST /tts/synthesize/
 }
 ```
 
-For `abena_twi_high`, `quality` is normally `high`. During high demand it may be `medium` with `notice: "Medium quality used due to high demand."` The next request tries High again.
+`abena_twi_high` always uses the High voice. If the voice service is temporarily at capacity, retry after the interval returned by the API.
 
 **Example (curl)** — saves `speech.wav`, no API key needed:
 
