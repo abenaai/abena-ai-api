@@ -102,7 +102,7 @@ POST /asr/transcribe/
 | Field            | Required | Description |
 |------------------|----------|-------------|
 | `audio_file`     | yes      | Your audio file, up to **25 MB**. Twi: 60 seconds. Ghanaian English/Pidgin: 120 seconds. |
-| `language`       | no       | `twi-en` (recommended Twi), `twi-pure`, `en`, or `gpe`. Default `en`. |
+| `language`       | no       | `twi-en` (recommended), `twi-pure`, `en`, or `gpe`. Default `twi-en`. |
 | `reference_text` | no       | If you know the correct text, include it to also get accuracy/WER scores. |
 
 Supported audio formats: WAV/PCM, MP3, M4A/AAC, FLAC, OGG, and other common formats. For predictable batch evaluations, use mono 16-bit PCM WAV at 16 kHz; files already in that format are used directly. Other valid files are normalized before transcription.
