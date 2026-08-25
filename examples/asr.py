@@ -3,7 +3,8 @@
 Turns an audio file into text. No API key needed (uses the free tier).
 
 Run:
-    python asr.py recording.wav
+    python asr.py recording.wav twi-en
+    python asr.py recording.wav twi-pure
     python asr.py recording.wav gpe
 """
 
@@ -18,8 +19,10 @@ from urllib.request import Request, urlopen
 API = "https://abena.mobobi.com/playground/api/v1/asr/transcribe/"
 
 
-def transcribe(path, language="en", api_key=None):
+def transcribe(path, language="twi-en", api_key=None):
     audio_path = Path(path)
+    if audio_path.stat().st_size > 25 * 1024 * 1024:
+        raise ValueError("Audio file is larger than 25 MB.")
     audio_bytes = audio_path.read_bytes()
     content_type = mimetypes.guess_type(audio_path.name)[0] or "application/octet-stream"
     boundary = "----abena-" + uuid.uuid4().hex
@@ -51,10 +54,13 @@ def transcribe(path, language="en", api_key=None):
     if status_code == 200 and "text" in data:
         print("Transcript:", data["text"])
     else:
-        print("Error:", data.get("message") or data.get("error") or status_code)
+        error = data.get("error")
+        if isinstance(error, dict):
+            error = error.get("message")
+        print("Error:", data.get("message") or error or status_code)
 
 
 if __name__ == "__main__":
     audio_path = sys.argv[1] if len(sys.argv) > 1 else "recording.wav"
-    language = sys.argv[2] if len(sys.argv) > 2 else "en"
+    language = sys.argv[2] if len(sys.argv) > 2 else "twi-en"
     transcribe(audio_path, language=language)

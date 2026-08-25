@@ -4,9 +4,10 @@ African‑language **Text‑to‑Speech** (speech from text) and **Speech Recogn
 
 Use it from a website, a phone app, a server, or just your terminal — **no special library required**.
 
-> 🟢 **Start free:** you get **30 requests with no account and no API key**. Just send a request and it works.
+> 🟢 **Start free:** no account or API key is required. Speech Recognition includes 20 free transcriptions; other free API endpoints include up to 30 requests. Sign in for 50 free Speech Recognition transcriptions.
 
 - 🌍 Live playground: <https://abena.mobobi.com/playground/tts/>
+- 🎙️ Speech Recognition playground: <https://abena.mobobi.com/playground/asr/>
 - 📖 Full docs: <https://abena.mobobi.com/playground/sdk/docs/>
 
 ---
@@ -100,21 +101,22 @@ POST /asr/transcribe/
 
 | Field            | Required | Description |
 |------------------|----------|-------------|
-| `audio_file`     | yes      | Your audio file. Up to **2 minutes** (120 seconds), 8 MB max. |
-| `language`       | no       | `en` (English) or `gpe` (Ghanaian Pidgin). Default `en`. |
+| `audio_file`     | yes      | Your audio file, up to **25 MB**. Twi: 60 seconds. Ghanaian English/Pidgin: 120 seconds. |
+| `language`       | no       | `twi-en` (recommended Twi), `twi-pure`, `en`, or `gpe`. Default `en`. |
 | `reference_text` | no       | If you know the correct text, include it to also get accuracy/WER scores. |
 
-Supported audio formats: WAV/PCM, MP3, M4A/AAC, FLAC, OGG, and other common formats that FFmpeg can decode. For the most predictable batch evaluations, use mono WAV at 16 kHz. Non-WAV uploads are converted on the server before transcription.
+Supported audio formats: WAV/PCM, MP3, M4A/AAC, FLAC, OGG, and other common formats. For predictable batch evaluations, use mono 16-bit PCM WAV at 16 kHz; files already in that format are used directly. Other valid files are normalized before transcription.
 
 **Response (JSON)**
 
 ```json
 {
-  "text": "hello how are you",
-  "transcription": "hello how are you",
-  "language": "en",
-  "confidence": 85.0,
-  "duration_seconds": 3.2
+  "text": "Mepɛ sɛ mede sika kɔma Kwame",
+  "transcription": "Mepɛ sɛ mede sika kɔma Kwame",
+  "language": "twi-en",
+  "duration_seconds": 3.2,
+  "credits_remaining": 19,
+  "credit_limit": 20
 }
 ```
 
@@ -123,7 +125,7 @@ Supported audio formats: WAV/PCM, MP3, M4A/AAC, FLAC, OGG, and other common form
 ```bash
 curl -X POST https://abena.mobobi.com/playground/api/v1/asr/transcribe/ \
   -F "audio_file=@recording.wav" \
-  -F "language=en"
+  -F "language=twi-en"
 ```
 
 ### ASR Languages
@@ -132,10 +134,12 @@ Fetch the live list any time: `GET /asr/voices.json`
 
 | Code  | Language                | Country |
 |-------|-------------------------|---------|
+| `twi-en` | Akan Twi + English (Recommended) 🇬🇭 | Ghana |
+| `twi-pure` | Akan Twi (Pure) 🇬🇭 | Ghana |
 | `en`  | English (Ghanaian accent) 🇬🇭 | Ghana |
 | `gpe` | Ghanaian Pidgin English 🇬🇭| Ghana |
 
-> 🔜 More languages, including **Akan Twi** speech recognition, are coming soon.
+Use `twi-en` for most Twi recordings, especially speech that includes English words. Use `twi-pure` only for recordings spoken entirely in Twi. Pure Twi responses include a short reminder in the `notice` field.
 
 ---
 
@@ -147,8 +151,9 @@ Errors return JSON with a helpful `message` (TTS) or `error` (ASR) field.
 |-------------|--------------------|------------|
 | `200`       | Success            | Use the result. |
 | `400`       | Bad request        | Check fields (missing `text`, unknown `voice`, `speed` out of range). |
-| `401`       | Free limit reached | You've used your 30 free requests — [get an API key](https://abena.mobobi.com/playground/sdk/dashboard/). |
-| `413`       | Too large          | Shorten text (500 chars) or audio (120 s / 8 MB). |
+| `401`       | Authentication failed | Check the API key, or omit it to use the no-sign-in allowance. |
+| `402`       | Credits used       | [Sign in](https://abena.mobobi.com/playground/sdk/dashboard/) for more free ASR credits or to manage your API allowance. |
+| `413`       | Too large          | Shorten text (500 chars) or use audio no larger than 25 MB. |
 | `429`       | Too many requests  | Slow down and retry shortly. |
 | `500`       | Server issue       | Retry shortly; contact support if it persists. |
 | `503`       | At capacity        | Wait for the `Retry-After` interval, then retry the same request. |
@@ -233,7 +238,7 @@ content_type = mimetypes.guess_type(audio_path.name)[0] or "application/octet-st
 body = (
     f"--{boundary}\r\n"
     'Content-Disposition: form-data; name="language"\r\n\r\n'
-    "en\r\n"
+    "twi-en\r\n"
     f"--{boundary}\r\n"
     f'Content-Disposition: form-data; name="audio_file"; filename="{audio_path.name}"\r\n'
     f"Content-Type: {content_type}\r\n\r\n"
