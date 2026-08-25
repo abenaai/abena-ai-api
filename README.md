@@ -135,11 +135,11 @@ Fetch the live list any time: `GET /asr/voices.json`
 | Code  | Language                | Country |
 |-------|-------------------------|---------|
 | `twi-en` | Akan Twi + English (Recommended) 🇬🇭 | Ghana |
-| `twi-only` | Akan Twi Only 🇬🇭 | Ghana |
+| `twi-only` | Akan Twi (No English) 🇬🇭 | Ghana |
 | `en`  | English (Ghanaian accent) 🇬🇭 | Ghana |
 | `gpe` | Ghanaian Pidgin English 🇬🇭| Ghana |
 
-Use `twi-en` for most Twi recordings, especially speech that includes English words. Choose `twi-only` for recordings spoken entirely in Twi. Twi Only responses include a short reminder in the `notice` field.
+Use `twi-en` for Twi, English, and mixed Twi-English speech. Choose `twi-only` only when the entire recording is spoken in Twi; English words may be missed. A `twi-only` response includes a short reminder in the `notice` field.
 
 ---
 
