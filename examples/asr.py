@@ -4,7 +4,7 @@ Turns an audio file into text. No API key needed (uses the free tier).
 
 Run:
     python asr.py recording.wav twi-en
-    python asr.py recording.wav twi-pure
+    python asr.py recording.wav twi-only
     python asr.py recording.wav gpe
 """
 
