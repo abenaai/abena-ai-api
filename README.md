@@ -111,8 +111,8 @@ Supported audio formats: WAV/PCM, MP3, M4A/AAC, FLAC, OGG, and other common form
 
 ```json
 {
-  "text": "Mepɛ sɛ mede sika kɔma Kwame",
-  "transcription": "Mepɛ sɛ mede sika kɔma Kwame",
+  "text": "Mepɛ sɛ mede sika kɔ ma Kwame",
+  "transcription": "Mepɛ sɛ mede sika kɔ ma Kwame",
   "language": "twi-en",
   "duration_seconds": 3.2,
   "credits_remaining": 24,
@@ -139,7 +139,7 @@ Fetch the live list any time: `GET /asr/voices.json`
 | `en`  | English (Ghanaian accent) 🇬🇭 | Ghana |
 | `gpe` | Ghanaian Pidgin English 🇬🇭| Ghana |
 
-Use `twi-en` for Twi, English, and mixed Twi-English speech. Choose `twi-only` only when the entire recording is spoken in Twi; English words may be missed. A `twi-only` response includes a short reminder in the `notice` field.
+Use `twi-en` for Twi, English, and Twi-English code-switching. Choose `twi-only` only when the entire recording is spoken in Twi; English words may be missed. A `twi-only` response includes a short reminder in the `notice` field.
 
 ---
 
