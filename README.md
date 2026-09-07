@@ -4,7 +4,7 @@ African‑language **Text‑to‑Speech** (speech from text) and **Speech Recogn
 
 Use it from a website, a phone app, a server, or just your terminal — **no special library required**.
 
-> 🟢 **Start free:** no account or API key is required. Speech Recognition includes 25 free transcriptions; other free API endpoints include up to 30 requests. Sign in for 50 free Speech Recognition transcriptions.
+> 🟢 **Start free:** no account or API key is required. Speech Recognition includes 25 free transcriptions; other free API endpoints include up to 20 requests. Sign in for 50 free Speech Recognition transcriptions.
 
 - 🌍 Live playground: <https://abena.mobobi.com/playground/tts/>
 - 🎙️ Speech Recognition playground: <https://abena.mobobi.com/playground/asr/>
