@@ -37,7 +37,7 @@ POST /tts/synthesize/
 | Field   | Required | Description |
 |---------|----------|-------------|
 | `text`  | yes      | Text to speak (up to 500 characters). |
-| `voice` | yes      | A voice ID, e.g. `akua_eng`, `abena_twi_high`, `kobby_gpe` — see [Voices](#tts-voices). |
+| `voice` | yes      | A voice ID, e.g. `akua_eng`, `abena_twi_high`, `kobby_gpe_high` — see [Voices](#tts-voices). |
 | `speed` | no       | `1.0` normal, `0.5` slowest, `2.0` fastest. Default `1.0`. |
 
 **Response (JSON)**
@@ -74,7 +74,9 @@ Fetch the live list any time: `GET /tts/voices.json`. Older short IDs and playgr
 |------------|----------|---------------------------|----------|--------|
 | `abena_twi_high` | Abena High | Twi (Akan, newer natural voice) 🇬🇭 | Ghana | Female |
 | `abena_twi_lite` | Abena Lite | Twi (Akan, lighter voice) 🇬🇭 | Ghana | Female |
-| `kobby_gpe`    | Kobby    | Ghanaian Pidgin English 🇬🇭| Ghana    | Male   |
+| `kobby_gpe_lite` | Kobby Lite | Ghanaian Pidgin English 🇬🇭 | Ghana | Male |
+| `kobby_gpe_medium` | Kobby Medium | Ghanaian Pidgin English 🇬🇭 | Ghana | Male |
+| `kobby_gpe_high` | Kobby High | Ghanaian Pidgin English 🇬🇭 | Ghana | Male |
 | `akua_eng`     | Akua     | English (Ghanaian accent) 🇬🇭| Ghana | Female |
 | `kwabena_eng`  | Kwabena  | English (Ghanaian accent) 🇬🇭| Ghana | Male |
 | `chioma_eng`   | Chioma   | English (Nigerian accent, energetic) | Nigeria | Female |
@@ -86,6 +88,20 @@ Fetch the live list any time: `GET /tts/voices.json`. Older short IDs and playgr
 | `folami_yor`   | Folami   | Yoruba                    | Nigeria  | Female |
 
 ---
+
+### Ghana Pidgin Voice Tiers
+
+- `kobby_gpe_lite`: the existing lightweight voice.
+- `kobby_gpe_medium`: the compressed neural voice.
+- `kobby_gpe_high`: the full-precision neural voice.
+
+The legacy IDs `kobby_gpe`, `kobby`, and `gpe-medium_v1` still select **Lite**.
+Despite its historical filename, `gpe-medium_v1` does not select the new Medium voice.
+Responses and new inference logs use the explicit tier ID and a `quality` value
+of `lite`, `medium`, or `high`. Existing historical logs are not rewritten.
+Select a tier through `voice`; sending a separate `quality` field does not change it.
+Requested tiers are never silently downgraded. On HTTP 503, wait for `Retry-After`
+before retrying. Use natural Ghana Pidgin text; no Twi letter placeholders are needed.
 
 ## Speech Recognition
 
