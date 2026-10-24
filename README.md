@@ -82,7 +82,9 @@ Fetch the live list any time: `GET /tts/voices.json`. Older short IDs and playgr
 | `chioma_eng`   | Chioma   | English (Nigerian accent, energetic) | Nigeria | Female |
 | `chioma_whispering_eng` | Chioma | English (Nigerian accent, whispering) | Nigeria | Female |
 | `mawuli_ewe`   | Mawuli   | Ewe                       | Ghana    | Male   |
-| `james_pcm`    | James    | Nigerian Pidgin English   | Nigeria  | Male   |
+| `james_pcm_lite` | James Lite | Nigerian Pidgin English | Nigeria | Male |
+| `james_pcm_medium` | James Medium | Nigerian Pidgin English | Nigeria | Male |
+| `james_pcm_high` | James High | Nigerian Pidgin English | Nigeria | Male |
 | `amani_swh`    | Amani    | Swahili                   | Kenya    | Female |
 | `abubakar_hau` | Abubakar | Hausa                     | Nigeria  | Male   |
 | `folami_yor`   | Folami   | Yoruba                    | Nigeria  | Female |
@@ -102,6 +104,19 @@ of `lite`, `medium`, or `high`. Existing historical logs are not rewritten.
 Select a tier through `voice`; sending a separate `quality` field does not change it.
 Requested tiers are never silently downgraded. On HTTP 503, wait for `Retry-After`
 before retrying. Use natural Ghana Pidgin text; no Twi letter placeholders are needed.
+
+### Nigerian Pidgin Voice Tiers
+
+- `james_pcm_lite`: the existing lightweight James voice.
+- `james_pcm_medium`: the conservatively compressed neural voice.
+- `james_pcm_high`: the full-precision neural voice.
+
+The legacy IDs `james_pcm`, `james`, `nigerian_pidgin_p`, and `nigerian_pidgin_s`
+still select **Lite**. New responses and inference logs identify the explicit tier;
+historical records stay unchanged. Choose through `voice`, not a separate `quality`
+field. Requested tiers are never silently downgraded; on HTTP 503, wait for
+`Retry-After` before retrying. Write natural Nigerian Pidgin; neural voices apply
+the training text normalizer, including `₦` to "naira". Twi placeholders are not used.
 
 ## Speech Recognition
 
