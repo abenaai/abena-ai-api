@@ -187,6 +187,12 @@ to credits and shared capacity; they are not a throughput guarantee.
 The no-sign-in ASR allowance is **10 credits** in both the API and Playground;
 ordinary signed-in ASR users retain **35**. Special grants retain their own limits.
 
+The **TTS Playground** has a separate **25-credit lifetime trial**, not a monthly
+allowance. Past usage counts and credits do not refill. Its current identity is
+IP-based, so people sharing a network may share the trial. After the trial,
+continue in the [Abena AI app](https://play.google.com/store/apps/details?id=com.mobobi.abena).
+This does not change paid/API credits or explicit administrator grants.
+
 Save the audio returned with your request. Optional dashboard audio copies share
 a **5 GiB storage cap** and **5 GiB minimum free-disk reserve**. If either limit is
 reached, normal API synthesis/transcription still returns its result, but a saved
