@@ -4,7 +4,7 @@ African‑language **Text‑to‑Speech** (speech from text) and **Speech Recogn
 
 Use it from a website, a phone app, a server, or just your terminal — **no special library required**.
 
-> 🟢 **Start free:** no account or API key is required. Speech Recognition includes 25 free transcriptions; other free API endpoints include up to 20 requests. Sign in for 50 free Speech Recognition transcriptions.
+> 🟢 **Start free:** no account or API key is required. Speech Recognition includes 10 free transcriptions; other free API endpoints include up to 20 requests. Sign in for 35 free Speech Recognition transcriptions.
 
 - 🌍 Live playground: <https://abena.mobobi.com/playground/tts/>
 - 🎙️ Speech Recognition playground: <https://abena.mobobi.com/playground/asr/>
@@ -146,8 +146,8 @@ Supported audio formats: WAV/PCM, MP3, M4A/AAC, FLAC, OGG, and other common form
   "transcription": "Mepɛ sɛ mede sika kɔ ma Kwame",
   "language": "twi-en",
   "duration_seconds": 3.2,
-  "credits_remaining": 24,
-  "credit_limit": 25
+  "credits_remaining": 9,
+  "credit_limit": 10
 }
 ```
 
@@ -177,6 +177,22 @@ Use `twi-en` for Twi, English, and Twi-English code-switching. Choose `twi-only`
 ## Errors & Limits
 
 Errors return JSON with a helpful `message` (TTS) or `error` (ASR) field.
+
+Free REST callers without an API key are limited to **20 requests per minute and
+100 per hour per IP address**, in addition to their credit allowance. These rate
+windows do not replenish credits. Respect `Retry-After` on HTTP 429; do not retry
+in a tight loop. API-key rate ceilings remain 120/minute and 1,200/hour, subject
+to credits and shared capacity; they are not a throughput guarantee.
+
+The no-sign-in ASR allowance is **10 credits** in both the API and Playground;
+ordinary signed-in ASR users retain **35**. Special grants retain their own limits.
+
+Save the audio returned with your request. Optional dashboard audio copies share
+a **5 GiB storage cap** and **5 GiB minimum free-disk reserve**. If either limit is
+reached, normal API synthesis/transcription still returns its result, but a saved
+audio copy may be unavailable. Older save-to-URL endpoints may return HTTP 503
+without charging a credit. Existing expiry policies are unchanged; the dashboard
+is not a permanent audio archive.
 
 | Status      | Meaning            | What to do |
 |-------------|--------------------|------------|
