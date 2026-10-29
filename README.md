@@ -74,15 +74,21 @@ Fetch the live list any time: `GET /tts/voices.json`. Older short IDs and playgr
 |------------|----------|---------------------------|----------|--------|
 | `abena_twi_high` | Abena High | Twi (Akan, newer natural voice) 🇬🇭 | Ghana | Female |
 | `abena_twi_lite` | Abena Lite | Twi (Akan, lighter voice) 🇬🇭 | Ghana | Female |
-| `kobby_gpe_lite` | Kobby Lite | Ghanaian Pidgin English 🇬🇭 | Ghana | Male |
+| `kofi_twi_medium` | Kofi Medium | Twi (Akan) 🇬🇭 | Ghana | Male |
+| `kofi_twi_high` | Kofi High | Twi (Akan) 🇬🇭 | Ghana | Male |
+| `kobby_gpe_lite` | Kobby Lite · Fast | Ghanaian Pidgin English 🇬🇭 | Ghana | Male |
 | `kobby_gpe_medium` | Kobby Medium | Ghanaian Pidgin English 🇬🇭 | Ghana | Male |
 | `kobby_gpe_high` | Kobby High | Ghanaian Pidgin English 🇬🇭 | Ghana | Male |
-| `akua_eng`     | Akua     | English (Ghanaian accent) 🇬🇭| Ghana | Female |
-| `kwabena_eng`  | Kwabena  | English (Ghanaian accent) 🇬🇭| Ghana | Male |
+| `akua_eng`     | Akua Lite · Fast | English (Ghanaian accent) 🇬🇭| Ghana | Female |
+| `kwabena_eng`  | Kwabena Lite · Fast | English (Ghanaian accent) 🇬🇭| Ghana | Male |
+| `akua_eng_medium` | Akua Medium | English (Ghanaian accent) 🇬🇭 | Ghana | Female |
+| `akua_eng_high` | Akua High | English (Ghanaian accent) 🇬🇭 | Ghana | Female |
+| `kwabena_eng_medium` | Kwabena Medium | English (Ghanaian accent) 🇬🇭 | Ghana | Male |
+| `kwabena_eng_high` | Kwabena High | English (Ghanaian accent) 🇬🇭 | Ghana | Male |
 | `chioma_eng`   | Chioma   | English (Nigerian accent, energetic) | Nigeria | Female |
 | `chioma_whispering_eng` | Chioma | English (Nigerian accent, whispering) | Nigeria | Female |
 | `mawuli_ewe`   | Mawuli   | Ewe                       | Ghana    | Male   |
-| `james_pcm_lite` | James Lite | Nigerian Pidgin English | Nigeria | Male |
+| `james_pcm_lite` | James Lite · Fast | Nigerian Pidgin English | Nigeria | Male |
 | `james_pcm_medium` | James Medium | Nigerian Pidgin English | Nigeria | Male |
 | `james_pcm_high` | James High | Nigerian Pidgin English | Nigeria | Male |
 | `amani_swh`    | Amani    | Swahili                   | Kenya    | Female |
@@ -91,9 +97,37 @@ Fetch the live list any time: `GET /tts/voices.json`. Older short IDs and playgr
 
 ---
 
+### Kofi: Male Akan Twi
+
+- `kofi_twi_medium`: the balanced-quality voice.
+- `kofi_twi_high`: the highest-quality voice.
+
+Kofi has no Lite version. Send normal Akan Twi text, including `ɛ` and `ɔ`;
+the server handles pronunciation internally. Keep these
+letters in your displayed text. Choose the tier through `voice`, not a separate
+`quality` field. Requested tiers are not silently replaced with another voice;
+on HTTP 503, wait for `Retry-After` before retrying.
+
+### Ghana English Voice Tiers
+
+Akua (female) and Kwabena (male) each offer:
+
+- **Lite · Fast**: existing fast voices, using the unchanged IDs `akua_eng` and `kwabena_eng`.
+- **Medium**: balanced quality, using `akua_eng_medium` and `kwabena_eng_medium`.
+- **High**: highest quality, using `akua_eng_high` and `kwabena_eng_high`.
+
+Choose the tier through `voice`, not a separate `quality` field. Existing aliases,
+including `gh-eng-accent-medium_v3` and `gh-eng-accent-male-medium_v3`, still select
+the original Lite voices; their historical names do not select the new Medium tier.
+Requested Medium/High voices are never silently downgraded. On HTTP 503, respect
+`Retry-After` and retry. The live voices endpoint lists installed options only.
+
 ### Ghana Pidgin Voice Tiers
 
-- `kobby_gpe_lite`: the existing lightweight voice.
+**Lite · Fast** labels identify the existing fast voices. This is a
+display-name change, not a new API identifier: keep using the IDs in the table.
+
+- `kobby_gpe_lite`: the existing lightweight voice, displayed as **Kobby Lite · Fast**.
 - `kobby_gpe_medium`: the compressed neural voice.
 - `kobby_gpe_high`: the full-precision neural voice.
 
@@ -107,7 +141,7 @@ before retrying. Use natural Ghana Pidgin text; no Twi letter placeholders are n
 
 ### Nigerian Pidgin Voice Tiers
 
-- `james_pcm_lite`: the existing lightweight James voice.
+- `james_pcm_lite`: the existing lightweight voice, displayed as **James Lite · Fast**.
 - `james_pcm_medium`: the conservatively compressed neural voice.
 - `james_pcm_high`: the full-precision neural voice.
 
