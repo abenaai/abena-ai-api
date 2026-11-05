@@ -4,7 +4,7 @@ African‑language **Text‑to‑Speech** (speech from text) and **Speech Recogn
 
 Use it from a website, a phone app, a server, or just your terminal — **no special library required**.
 
-> 🟢 **Start free:** no account or API key is required. Speech Recognition includes 10 free transcriptions; other free API endpoints include up to 20 requests. Sign in for 35 free Speech Recognition transcriptions.
+> 🟢 **Start free:** no account or API key is required. Speech Recognition includes 10 free transcriptions; other free API endpoints include up to 20 requests. Sign in for 20 free Speech Recognition transcriptions.
 
 - 🌍 Live playground: <https://abena.mobobi.com/playground/tts/>
 - 🎙️ Speech Recognition playground: <https://abena.mobobi.com/playground/asr/>
@@ -166,8 +166,8 @@ POST /asr/transcribe/
 
 | Field            | Required | Description |
 |------------------|----------|-------------|
-| `audio_file`     | yes      | Your audio file, up to **25 MB**. Twi: 60 seconds. Ghanaian English/Pidgin: 120 seconds. |
-| `language`       | no       | `twi-en` (recommended), `twi-only`, `en`, or `gpe`. Default `twi-en`. |
+| `audio_file`     | yes      | Your audio file, up to **25 MB**. Twi and Pidgin High: 60 seconds. Ghanaian English and Ghana Pidgin Lite: 120 seconds. |
+| `language`       | no       | `twi-en` (recommended), `twi-only`, `en`, `gpe`, `gpe-high`, or `pcm`. Default `twi-en`. |
 | `reference_text` | no       | If you know the correct text, include it to also get accuracy/WER scores. |
 
 Supported audio formats: WAV/PCM, MP3, M4A/AAC, FLAC, OGG, and other common formats. For predictable batch evaluations, use mono 16-bit PCM WAV at 16 kHz; files already in that format are used directly. Other valid files are normalized before transcription.
@@ -202,9 +202,19 @@ Fetch the live list any time: `GET /asr/voices.json`
 | `twi-en` | Akan Twi + English (Recommended) 🇬🇭 | Ghana |
 | `twi-only` | Akan Twi (No English) 🇬🇭 | Ghana |
 | `en`  | English (Ghanaian accent) 🇬🇭 | Ghana |
-| `gpe` | Ghanaian Pidgin English 🇬🇭| Ghana |
+| `gpe` | Ghanaian Pidgin English · Lite 🇬🇭 | Ghana |
+| `gpe-high` | Ghanaian Pidgin English · High 🇬🇭 | Ghana |
+| `pcm` | Nigerian Pidgin English · High 🇳🇬 | Nigeria |
 
 Use `twi-en` for Twi, English, and Twi-English code-switching. Choose `twi-only` only when the entire recording is spoken in Twi; English words may be missed. A `twi-only` response includes a short reminder in the `notice` field.
+
+Use `gpe-high` for Ghanaian Pidgin or `pcm` for Nigerian Pidgin, including speech
+that switches into English. Both use the same High recognition model. Existing
+`gpe` and `pidgin` requests keep using Ghana Pidgin Lite; there is no Nigerian
+Pidgin Lite option. The accepted `pcm-high` alias returns the canonical `pcm` code.
+These High modes share Twi's bounded processing queue and the same ASR credit
+allowance, not separate credits or extra parallel capacity. Busy responses include
+a retry delay; respect it rather than sending duplicate requests.
 
 ---
 
@@ -219,7 +229,9 @@ in a tight loop. API-key rate ceilings remain 120/minute and 1,200/hour, subject
 to credits and shared capacity; they are not a throughput guarantee.
 
 The no-sign-in ASR allowance is **10 credits** in both the API and Playground;
-ordinary signed-in ASR users retain **35**. Special grants retain their own limits.
+ordinary signed-in ASR users currently receive **20**. These are configurable
+allowances, not per-language grants or a promise of daily resets. Special grants
+retain their own limits; use each response's credit fields as the authority.
 
 The **TTS Playground** has a separate **25-credit lifetime trial**, not a monthly
 allowance. Past usage counts and credits do not refill. Its current identity is
