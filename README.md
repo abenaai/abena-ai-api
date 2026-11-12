@@ -1,3 +1,4 @@
+
 # Abena AI API
 
 African‑language **Text‑to‑Speech** (speech from text) and **Speech Recognition** (text from speech), over plain HTTP.
@@ -18,7 +19,7 @@ Use it from a website, a phone app, a server, or just your terminal — **no spe
 https://abena.mobobi.com/playground/api/v1
 ```
 
-> ℹ️ **First request to a voice may take ~10–15 seconds.** The first time a voice is used, its model is loaded and prepared on our server (offline). After that the same voice responds in about a second.
+> ℹ️ **The first request to a voice can take longer while it loads.** Response time depends on text length, voice quality and current demand. Respect `Retry-After` when the service is busy.
 
 ---
 
@@ -64,15 +65,20 @@ curl -s -X POST https://abena.mobobi.com/playground/api/v1/tts/synthesize/ \
   | python3 -c "import sys,json,base64; open('speech.wav','wb').write(base64.b64decode(json.load(sys.stdin)['audio_base64'])); print('Saved speech.wav')"
 ```
 
-> 🗣️ **Twi tip:** use `abena_twi_high` for the newer, more natural single-speaker Twi voice. Use `abena_twi_lite` when you want the lighter voice, which can sound clearer on some short phrases. For longer Twi text, write naturally and use commas to break long ideas into short phrases.
+> 🗣️ **Twi tip:** start with `abena_twi_medium`, the recommended natural Twi voice. Choose Abena, Ama or Yaa in Medium or High quality. Write natural Twi, including `ɛ`, `ɔ`, numbers and acronyms; do not substitute letters or supply pronunciation symbols.
 
 ### TTS Voices
 
-Fetch the live list any time: `GET /tts/voices.json`. Older short IDs and playground model IDs like `akua`, `en-ng-chioma`, `en-ng-chioma-whispering`, `swahili`, and `nigerian_pidgin_s` are still accepted as aliases, but new integrations should use the language-suffixed IDs below. The old Twi ID `abena_twi` has been replaced by explicit High and Lite options.
+Fetch the live list any time: `GET /tts/voices.json`. Older short IDs and playground model IDs like `akua`, `en-ng-chioma`, `en-ng-chioma-whispering`, `swahili`, and `nigerian_pidgin_s` are still accepted as aliases, but new integrations should use the language-suffixed IDs below. For Twi, choose an explicit Medium, High or Lite ID from the table.
 
 | Voice ID   | Name     | Language                  | Country  | Gender |
 |------------|----------|---------------------------|----------|--------|
-| `abena_twi_high` | Abena High | Twi (Akan, newer natural voice) 🇬🇭 | Ghana | Female |
+| `abena_twi_medium` | Abena Medium · Recommended | Twi (Akan) 🇬🇭 | Ghana | Female |
+| `abena_twi_high` | Abena High | Twi (Akan) 🇬🇭 | Ghana | Female |
+| `ama_twi_medium` | Ama Medium | Twi (Akan) 🇬🇭 | Ghana | Female |
+| `ama_twi_high` | Ama High | Twi (Akan) 🇬🇭 | Ghana | Female |
+| `yaa_twi_medium` | Yaa Medium | Twi (Akan) 🇬🇭 | Ghana | Female |
+| `yaa_twi_high` | Yaa High | Twi (Akan) 🇬🇭 | Ghana | Female |
 | `abena_twi_lite` | Abena Lite | Twi (Akan, lighter voice) 🇬🇭 | Ghana | Female |
 | `kofi_twi_medium` | Kofi Medium | Twi (Akan) 🇬🇭 | Ghana | Male |
 | `kofi_twi_high` | Kofi High | Twi (Akan) 🇬🇭 | Ghana | Male |
@@ -96,6 +102,19 @@ Fetch the live list any time: `GET /tts/voices.json`. Older short IDs and playgr
 | `folami_yor`   | Folami   | Yoruba                    | Nigeria  | Female |
 
 ---
+
+### Abena, Ama and Yaa: Female Akan Twi
+
+Each voice offers **Medium** (recommended balance) and **High** quality. Choose
+the speaker and tier through `voice`; a separate `quality` field does not select it.
+Requests retain the chosen voice/tier rather than silently changing to Lite.
+On HTTP 503, wait for `Retry-After` before retrying.
+
+`abena_twi_lite` remains available in the API and speech playground for lightweight
+speech. New Web Studio podcasts and drama use Medium or High instead of Lite.
+Existing High IDs remain valid; the additional voices do not change request or
+response fields. Voice IDs and quality are recorded in the normal usage dashboard;
+historical records are not relabelled.
 
 ### Kofi: Male Akan Twi
 
