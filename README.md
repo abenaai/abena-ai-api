@@ -252,11 +252,41 @@ ordinary signed-in ASR users currently receive **20**. These are configurable
 allowances, not per-language grants or a promise of daily resets. Special grants
 retain their own limits; use each response's credit fields as the authority.
 
-The **TTS Playground** has a separate **25-credit lifetime trial**, not a monthly
-allowance. Past usage counts and credits do not refill. Its current identity is
-IP-based, so people sharing a network may share the trial. After the trial,
-continue in the [Abena AI app](https://play.google.com/store/apps/details?id=com.mobobi.abena).
-This does not change paid/API credits or explicit administrator grants.
+The **TTS Playground** currently has a separate **20-credit lifetime trial**.
+Past usage counts; the allowance does not refill monthly. Visitors sharing a
+network may share the trial. Purchased credits and administrator grants are separate.
+
+After the speech trial, [add prepaid credits](https://abena.mobobi.com/playground/credits/)
+or [use Abena AI free on Android](https://play.google.com/store/apps/details?id=com.mobobi.abena).
+Buying credits does not automatically convert a free API request into a paid one.
+An exhausted authenticated TTS request returns HTTP 402. Guest TTS preserves its
+existing HTTP 401 with `reason: free_allowance_exhausted`. Both return JSON links, not a
+redirect that would send your input or API key to a payment provider. Speech
+recognition remains free within its existing limits; TTS credits do not extend them.
+
+**Prepaid speech** is metered per character (letters, spaces and punctuation):
+0.02 credits for Lite, 0.04 for Medium and 0.06 for High. Credit packs are one-time
+purchases in Ghana cedis; there is no subscription or expiry. See the
+[credit page](https://abena.mobobi.com/playground/credits/) for current pack prices.
+
+To use purchased credits on `POST /tts/synthesize/`:
+
+1. Authenticate with your API key and add `X-Abena-Use-Credits: confirmed`. Send
+   the usual text, voice and optional speed. The first response is HTTP 402
+   with `error: credit_confirmation_required`, the price in `quote.credits`,
+   `can_afford`, and a signed `billing_quote`. No speech has been generated or charged.
+2. After approving the price, resend the **same input and headers** with
+   `billing_quote` added to the JSON body. On success, read `audio_base64`
+   and `purchased_credits_used`.
+3. If the status is pending, respect `Retry-After` and reuse the same quote
+   and input. Do not request a fresh quote for an already confirmed job.
+
+The public [Web Studio](https://abena.mobobi.com/playground/video-studio/) also
+accepts these credits. Studio shows its price before you confirm. A short result
+can cost less; a longer result cannot cost more than the displayed price. Failed
+generations return reserved credits. Confirmed prepaid text-to-speech requests
+take priority over waiting free speech requests. This does not interrupt active
+work, guarantee an immediate start, or change speech-recognition limits.
 
 Save the audio returned with your request. Optional dashboard audio copies share
 a **5 GiB storage cap** and **5 GiB minimum free-disk reserve**. If either limit is
@@ -270,7 +300,7 @@ is not a permanent audio archive.
 | `200`       | Success            | Use the result. |
 | `400`       | Bad request        | Check fields (missing `text`, unknown `voice`, `speed` out of range). |
 | `401`       | Authentication failed | Check the API key, or omit it to use the no-sign-in allowance. |
-| `402`       | Credits used       | [Sign in](https://abena.mobobi.com/playground/sdk/dashboard/) for more free ASR credits or to manage your API allowance. |
+| `402`       | Credits used       | For TTS, [add credits](https://abena.mobobi.com/playground/credits/) or use the free mobile app. For ASR, check the remaining free allowance; buying credits does not extend it. |
 | `413`       | Too large          | Shorten text (500 chars) or use audio no larger than 25 MB. |
 | `429`       | Too many requests  | Slow down and retry shortly. |
 | `500`       | Server issue       | Retry shortly; contact support if it persists. |
@@ -393,3 +423,4 @@ X-API-Key: YOUR_API_KEY
 ## License
 
 [MIT](LICENSE)
+
