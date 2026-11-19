@@ -5,7 +5,7 @@ African‑language **Text‑to‑Speech** (speech from text) and **Speech Recogn
 
 Use it from a website, a phone app, a server, or just your terminal — **no special library required**.
 
-> 🟢 **Start free:** no account or API key is required. Speech Recognition includes 10 free transcriptions; other free API endpoints include up to 20 requests. Sign in for 20 free Speech Recognition transcriptions.
+> 🟢 **Start free:** no account or API key is required. General REST API: 15 guest requests or 15 credits for a standard API account. Speech Recognition API: 10 guest or 15 signed-in transcriptions. [Check current allowances](https://abena.mobobi.com/playground/sdk/rate-limits/).
 
 - 🌍 Live playground: <https://abena.mobobi.com/playground/tts/>
 - 🎙️ Speech Recognition playground: <https://abena.mobobi.com/playground/asr/>
@@ -248,7 +248,7 @@ in a tight loop. API-key rate ceilings remain 120/minute and 1,200/hour, subject
 to credits and shared capacity; they are not a throughput guarantee.
 
 The no-sign-in ASR allowance is **10 credits** in both the API and Playground;
-ordinary signed-in ASR users currently receive **20**. These are configurable
+ordinary signed-in ASR users currently receive **15 through the API** or **20 in the Playground**. These are configurable
 allowances, not per-language grants or a promise of daily resets. Special grants
 retain their own limits; use each response's credit fields as the authority.
 
