@@ -5,7 +5,7 @@ African‑language **Text‑to‑Speech** (speech from text) and **Speech Recogn
 
 Use it from a website, a phone app, a server, or just your terminal — **no special library required**.
 
-> 🟢 **Start free:** no account or API key is required. General REST API: 15 guest requests or 15 credits for a standard API account. Speech Recognition API: 10 guest or 15 signed-in transcriptions. [Check current allowances](https://abena.mobobi.com/playground/sdk/rate-limits/).
+> 🟢 **Start free:** no account or API key is required. TTS API: 15 character-metered credits for guests or standard API accounts. Speech Recognition API: 10 guest or 15 signed-in transcriptions. [Check current allowances](https://abena.mobobi.com/playground/sdk/rate-limits/).
 
 - 🌍 Live playground: <https://abena.mobobi.com/playground/tts/>
 - 🎙️ Speech Recognition playground: <https://abena.mobobi.com/playground/asr/>
@@ -258,18 +258,37 @@ network may share the trial. Purchased credits and administrator grants are sepa
 
 After the speech trial, [add prepaid credits](https://abena.mobobi.com/playground/credits/)
 or [use Abena AI free on Android](https://play.google.com/store/apps/details?id=com.mobobi.abena).
-Buying credits does not automatically convert a free API request into a paid one.
-An exhausted authenticated TTS request returns HTTP 402. Guest TTS preserves its
+Authenticated TTS uses the free allowance first, then purchased credit automatically.
+No activation header is required, and your payment method is never charged automatically.
+A request with insufficient combined credit returns HTTP 402. Guest TTS preserves its
 existing HTTP 401 with `reason: free_allowance_exhausted`. Both return JSON links, not a
 redirect that would send your input or API key to a payment provider. Speech
 recognition remains free within its existing limits; TTS credits do not extend them.
 
-**Prepaid speech** is metered per character (letters, spaces and punctuation):
+**Both free and prepaid speech** are metered per normalized character (letters, spaces and punctuation):
 0.02 credits for Lite, 0.04 for Medium and 0.06 for High. Credit packs are one-time
 purchases in Ghana cedis; there is no subscription or expiry. See the
 [credit page](https://abena.mobobi.com/playground/credits/) for current pack prices.
 
-To use purchased credits on `POST /tts/synthesize/`:
+To use free and purchased credits on `POST /tts/synthesize/`, send your usual
+text, voice and optional speed with your API key. The API limit remains 500
+characters per request; Speech Playground remains 280. A request can use the
+last fraction of free credit and charge only the remainder to purchased credit.
+Failed generation returns both portions. Old usage and purchased balances are
+not recalculated. ASR and Studio pricing are unchanged by TTS character metering.
+
+For authenticated retries, include a unique `Idempotency-Key` for each new
+generation (1–128 letters, digits, dots, underscores, colons or hyphens). Reuse
+the same key and identical input for retries, including initially free requests.
+Follow `Retry-After` while pending. You can also reuse a returned `billing_quote`
+with the identical input. Do not start a new key when an outcome is unknown.
+Guest requests do not support paid fallback or durable idempotent retries.
+
+Responses expose `X-Free-Credits-Remaining` and, on the purchased/durable route,
+`X-Purchased-Credits-Remaining`, `free_credits_used` and `purchased_credits_used`.
+Without a key, each successful new request consumes its own character cost.
+
+The older explicit purchased-only quote flow remains supported:
 
 1. Authenticate with your API key and add `X-Abena-Use-Credits: confirmed`. Send
    the usual text, voice and optional speed. The first response is HTTP 402
