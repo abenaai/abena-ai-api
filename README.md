@@ -267,8 +267,15 @@ recognition remains free within its existing limits; TTS credits do not extend t
 
 **Both free and prepaid speech** are metered per normalized character (letters, spaces and punctuation):
 0.02 credits for Lite, 0.04 for Medium and 0.06 for High. Credit packs are one-time
-purchases in Ghana cedis; there is no subscription or expiry. See the
-[credit page](https://abena.mobobi.com/playground/credits/) for current pack prices.
+purchases in Ghana cedis, with no subscription. New purchases are valid for 12 months
+after payment; earlier purchases and checkouts retain their original no-expiry terms.
+Free allowance is used first, then purchased credits expiring soonest. Each top-up has
+its own deadline and does not reset earlier purchases. The
+[credit page](https://abena.mobobi.com/playground/credits/) shows current pack prices,
+remaining amounts and expiry dates. Email reminders are sent around 30 and 7 days
+before expiry. Credits returned after failed processing retain their deadline or get
+30 days to use them, whichever is later. For prolonged service downtime, contact
+info@mobobi.com about extending affected unspent credits.
 
 To use free and purchased credits on `POST /tts/synthesize/`, send your usual
 text, voice and optional speed with your API key. The API limit remains 500
@@ -442,4 +449,3 @@ X-API-Key: YOUR_API_KEY
 ## License
 
 [MIT](LICENSE)
-
